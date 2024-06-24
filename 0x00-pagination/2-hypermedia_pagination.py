@@ -1,8 +1,8 @@
 #!/usr/bin/ env python3
 """ Hypermedia pagination"""
 import csv
-from typing import Dict, List, Optional, Tuple
-
+from typing import Dict, List, Tuple
+import math
 
 class Server:
     """Server class to paginate a database of popular baby names."""
@@ -41,12 +41,12 @@ class Server:
         end_index = start_index + page_size
         return (start_index, end_index)
 
-    def get_hyper(self, page: int, page_size: int) -> Dict:
+    def get_hyper(self, page: int = 1, page_size: int = 10) -> Dict:
         """ return hyper pagination """
         data = self.get_page(page, page_size)
-        next_page = page + 1 if len(self.dataset()) < page else None
+        next_page = page + 1 if len(self.__dataset) < page else None
         prev_page = page - 1 if (page - 1) > 0 else None
-        total_pages = ((len(self.dataset()) + page_size - 1) // page_size) # calc total pages
+        total_pages = math.floor(((len(self.__dataset) + page_size - 1) / page_size)) # calc total pages
         paginated_info = {
             "page_size": page_size,
             "page": page,
