@@ -9,6 +9,7 @@ class MRUCache(BaseCaching):
     """MRU caching objects"""
 
     def __init__(self):
+        """reinitialize the MRU BASE CACHING"""
         super().__init__()
         self.cache_data = OrderedDict()
 
@@ -32,6 +33,7 @@ class MRUCache(BaseCaching):
                 self.cache_data[key] = item
 
     def get(self, key):
+        """ retrieve value from MRU cache"""
         val = self.cache_data.get(key) or None
         if not val:
             return None
