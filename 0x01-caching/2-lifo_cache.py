@@ -1,28 +1,31 @@
 #!/usr/bin/env python3
 """ Implement LIFO Cache system """
+from collections import OrderedDict
+
 from base_caching import BaseCaching
 
 
 class LIFOCache(BaseCaching):
     """The LIFO cache objects system"""
 
+    def __init__(self):
+        """reinitialize the cached data object"""
+        super().__init__()
+        self.cache_data = OrderedDict()
+
     def put(self, key, item):
         """Add item to the caching object"""
         if not key or not item:
             return None
 
-        self.cache_data.update({key: item})
-        if BaseCaching.MAX_ITEMS < len(self.cache_data):
-            last_item = list(self.cache_data.keys())[-1]
-            del self.cache_data[last_item]
-            print(f"DISCARD: {last_item}")
+        if BaseCaching.MAX_ITEMS < len(self.cache_data) + 1:
+            last_item = self.cache_data.popitem(True)
+            print(f"DISCARD: {last_item[0]}")
 
+        self.cache_data[key] = item
+        self.cache_data.move_to_end(key, last=True)
         return self.cache_data
 
     def get(self, key):
         """get cached item in object"""
-        return (
-            self.cache_data.get(key)
-            if self.cache_data.get(key) or key in self.cache_data
-            else None
-        )
+        return self.cache_data.get(key) or None
