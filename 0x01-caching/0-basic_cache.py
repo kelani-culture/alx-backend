@@ -4,6 +4,8 @@ from base_caching import BaseCaching
 
 
 class BasicCache(BaseCaching):
+    """The Basic Cache system object"""
+
     def put(self, key, item):
         """add item too cached data"""
         if not key or not item:
@@ -11,8 +13,9 @@ class BasicCache(BaseCaching):
         return self.cache_data.update({key: item})
 
     def get(self, key):
-        """get item from cached data"""
-        keys = self.cache_data.keys()
-        if key is None or key not in keys:
-            return None
-        return self.cache_data.get(key)
+        """get cached item"""
+        return (
+            self.cache_data.get(key)
+            if self.cache_data.get(key) or key in self.cache_data
+            else None
+        )
