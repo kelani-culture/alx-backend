@@ -35,8 +35,7 @@ def before_request():
 
 @babel.localeselector
 def get_locale():
-    lang = request.args.get('lang') or None
-    print(lang)
+    lang = request.args.get('lang') or g.user.get('locale')
     if lang:
         return lang
     return request.accept_languages.best_match(app.config["LANGUAGES"])
@@ -48,7 +47,7 @@ def index():
     index view for renderting static html
     """
     user = g.user
-    return render_template("5-index.html", user=user)
+    return render_template("6-index.html", user=user)
 
 
 if __name__ == '__main__':
