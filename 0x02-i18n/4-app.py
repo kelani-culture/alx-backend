@@ -17,6 +17,9 @@ babel = Babel(app)
 
 @babel.localeselector
 def get_locale():
+    lang = request.args.get('lang') or None
+    if lang:
+        return lang
     return request.accept_languages.best_match(app.config["LANGUAGES"])
 
 
@@ -25,4 +28,5 @@ def index():
     """
     index view for renderting static html
     """
-    return render_template("2-index.html")
+    return render_template("4-index.html")
+
