@@ -1,20 +1,29 @@
-from flask import Flask, render_template
+from flask import Flask, render_template, request
 from flask_babel import Babel
 
-
 app = Flask(__name__)
+
+
 class Config:
-    LANGUAGES = ['en', 'fr']
-    BABEL_DEFAULT_LOCALE = 'en'
-    BABEL_DEFAULT_TIMEZONE = 'UTC'
+    LANGUAGES = ["en", "fr"]
+    BABEL_DEFAULT_LOCALE = "en"
+    BABEL_DEFAULT_TIMEZONE = "UTC"
 
 
 app.config.from_object(Config)
 
-app.route('/')
+babel = Babel(app)
+
+
+@babel.localeselector
+def get_locale():
+    return request.accept_languages.best_match(app.config["LANGUAGES"])
+
+
+@app.route("/")
 def index():
     """
     index view for renderting static html
     """
-    return render_template('0-index.html')
+    return render_template("0-index.html")
 
